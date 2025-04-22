@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import PredictionChart from "./PredictionChart";
 import PredictionCards from "./PredictionCards";
+import BestBuySellSuggestion from "./BestBuySellSuggestion";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ import { toast } from "@/hooks/use-toast";
 
 type Prediction = { date: string; price: number };
 
-// Mock JSON data for a few stock symbols (7 days each)
+// Extended mock JSON data for popular stock symbols (7 days each)
 const mockStockData: Record<string, Prediction[]> = {
   AAPL: [
     { date: "2025-04-21", price: 173.2 },
@@ -47,6 +48,33 @@ const mockStockData: Record<string, Prediction[]> = {
     { date: "2025-04-26", price: 221.5 },
     { date: "2025-04-27", price: 225.2 },
   ],
+  AMZN: [
+    { date: "2025-04-21", price: 182.7 },
+    { date: "2025-04-22", price: 184.0 },
+    { date: "2025-04-23", price: 182.3 },
+    { date: "2025-04-24", price: 185.2 },
+    { date: "2025-04-25", price: 187.0 },
+    { date: "2025-04-26", price: 189.5 },
+    { date: "2025-04-27", price: 191.1 },
+  ],
+  NVDA: [
+    { date: "2025-04-21", price: 851.9 },
+    { date: "2025-04-22", price: 860.2 },
+    { date: "2025-04-23", price: 858.6 },
+    { date: "2025-04-24", price: 863.5 },
+    { date: "2025-04-25", price: 866.8 },
+    { date: "2025-04-26", price: 871.9 },
+    { date: "2025-04-27", price: 879.1 },
+  ],
+  META: [
+    { date: "2025-04-21", price: 476.5 },
+    { date: "2025-04-22", price: 480.2 },
+    { date: "2025-04-23", price: 478.7 },
+    { date: "2025-04-24", price: 482.9 },
+    { date: "2025-04-25", price: 484.1 },
+    { date: "2025-04-26", price: 487.3 },
+    { date: "2025-04-27", price: 489.0 },
+  ],
 };
 
 const defaultSymbol = "AAPL";
@@ -69,7 +97,7 @@ const StockPredictor: React.FC = () => {
     } else {
       toast({
         title: "No Data",
-        description: `We don’t have data for "${input.toUpperCase()}". Try: AAPL, MSFT, GOOGL, TSLA.`,
+        description: `We don’t have data for "${input.toUpperCase()}". Try: AAPL, MSFT, GOOGL, TSLA, AMZN, NVDA, META.`,
         variant: "destructive",
       });
     }
@@ -82,7 +110,7 @@ const StockPredictor: React.FC = () => {
           <Input
             value={input}
             onChange={e => setInput(e.target.value)}
-            placeholder="Enter stock symbol (try: AAPL, MSFT…) "
+            placeholder="Enter stock symbol (try: AAPL, MSFT, AMZN, NVDA, META…) "
             className="md:text-lg border-gray-300"
             maxLength={8}
             spellCheck={false}
@@ -100,6 +128,7 @@ const StockPredictor: React.FC = () => {
         <PredictionChart predictions={predictions} />
       </div>
       <PredictionCards predictions={predictions} />
+      <BestBuySellSuggestion predictions={predictions} />
     </Card>
   );
 };
